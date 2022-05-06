@@ -10,6 +10,8 @@ import logging
 
 
 class BaseStrategy:
+    STRATEGYNAME = "BaseStrategy"
+
     @staticmethod
     def solve(que) -> SudokuQuestion:
         if not isinstance(que, SudokuQuestion):

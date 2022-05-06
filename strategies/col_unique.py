@@ -10,9 +10,11 @@ from .basic_strategy import BaseStrategy
 
 
 class ColUnique(BaseStrategy):
+    STRATEGYNAME = "ColUnique"
+
     @staticmethod
     def solve(que) -> SudokuQuestion:
-        super().solve(que)
+        BaseStrategy.solve(que)
         for col in range(SudokuQuestion.WIDTH):
             for row in range(SudokuQuestion.HEIGHT):
                 if que[row][col].isdefinite():

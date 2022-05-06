@@ -13,11 +13,13 @@ class GridUnique(BaseStrategy):
     GRID_WIDTH = 3
     GRID_HEIGHT = 3
 
+    STRATEGYNAME = "GridUnique"
+
     @staticmethod
     def solve(que) -> SudokuQuestion:
-        super().solve(que)
-        for grow in range(SudokuQuestion.HEIGHT/GridUnique.GRID_HEIGHT):
-            for gcol in range(SudokuQuestion.WIDTH/GridUnique.GRID_WIDTH):
+        BaseStrategy.solve(que)
+        for grow in range(int(SudokuQuestion.HEIGHT/GridUnique.GRID_HEIGHT)):
+            for gcol in range(int(SudokuQuestion.WIDTH/GridUnique.GRID_WIDTH)):
 
                 for drow in range(grow*GridUnique.GRID_HEIGHT, (grow+1)*GridUnique.GRID_HEIGHT):
                     for dcol in range(gcol*GridUnique.GRID_WIDTH, (gcol+1)*GridUnique.GRID_WIDTH):

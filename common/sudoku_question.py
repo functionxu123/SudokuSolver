@@ -26,7 +26,7 @@ class SudokuQuestion:
         for row in tep_question:
             tep_que = []
             for col in row:
-                if col == "*":
+                if not col or col == "*":
                     tep_que.append(PosDigit())
                 else:
                     dig = int(col)

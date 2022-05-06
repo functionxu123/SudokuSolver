@@ -24,7 +24,7 @@ class Digit:
                 self.__num[i-self.LIMIT_MIN] = 1
         elif isinstance(initnum, int):
             self.__num = [0]*length
-            if i > self.LIMIT_MAX or i < self.LIMIT_MIN:
+            if initnum > self.LIMIT_MAX or initnum < self.LIMIT_MIN:
                 logging.error("Setting invalid num to digit")
                 return
             self.__num[initnum-self.LIMIT_MIN] = 1
