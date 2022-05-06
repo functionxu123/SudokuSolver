@@ -6,7 +6,7 @@
 '''
 
 
-from common import positive_digit, sudoku_question
+from common import sudoku_question
 import argparse
 import datetime
 import logging
