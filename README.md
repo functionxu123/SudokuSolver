@@ -1,2 +1,6 @@
 # SudokuSolver
 解数独游戏的AI
+
+## 使用方法
+1. 将题目用json表示，具体格式参考`sudokyjsons/example.json`文件
+2. 调用程序求解：`python SudokuSolver.py -f sudokujsons/example.json` 后面的json名改为自己的文件名
