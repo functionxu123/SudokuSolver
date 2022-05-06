@@ -69,6 +69,8 @@ class Digit:
             print("*", end="")
 
     def get_entropy(self):
+        if not self.check():
+            raise Exception("Digit don't have valid num")
         return math.log(sum(self.__num))
 
     def check(self):
