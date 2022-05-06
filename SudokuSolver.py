@@ -59,11 +59,14 @@ class SudokuSolver:
                   old_entropy-new_entropy, "]")
             self.question.show()
             entropy_change += old_entropy-new_entropy
+            if new_entropy==0:
+                logging.info("all digits resolved, this question is done")
+                break
         return entropy_change
 
     def solveall(self):
         step_index=0
-        while True:
+        while self.question.get_entropy()!=0:
             ret=self.step(step_index)
             step_index+=1
 
