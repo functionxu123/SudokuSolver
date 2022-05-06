@@ -70,3 +70,9 @@ class Digit:
 
     def get_entropy(self):
         return math.log(sum(self.__num))
+
+    def check(self):
+        if sum(self.__num) <= 0:
+            logging.error("digit check error: no valid num")
+            return False
+        return True

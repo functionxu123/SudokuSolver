@@ -56,3 +56,12 @@ class SudokuQuestion:
             for col in row:
                 ret += col.get_entropy()
         return ret
+
+    def check(self):
+        for indr, row in enumerate(self.__question):
+            for indc, col in enumerate(row):
+                if not col.check():
+                    self.show()
+                    logging.error("Digit error at: x=%d, y=%d " % (indc, indr))
+                    return False
+        return True

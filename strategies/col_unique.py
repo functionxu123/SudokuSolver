@@ -14,11 +14,11 @@ class ColUnique(BaseStrategy):
     def solve(que) -> SudokuQuestion:
         super().solve(que)
         for col in range(SudokuQuestion.WIDTH):
-            unique_nums = []
             for row in range(SudokuQuestion.HEIGHT):
                 if que[row][col].isdefinite():
-                    rid_num=que[row][col].get_minnum()
+                    rid_num = que[row][col].get_minnum()
                     for rid_row in range(SudokuQuestion.HEIGHT):
-                        if rid_row == row: continue
+                        if rid_row == row:
+                            continue
                         que[rid_row][col].remove_num(rid_num)
         return que
