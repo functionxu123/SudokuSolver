@@ -5,7 +5,7 @@
 @Time    :   2022/05/06 22:37:22
 '''
 
-from .digit import Digit
+from .positive_digit import PosDigit
 import json
 import logging
 
@@ -22,22 +22,37 @@ class SudokuQuestion:
         if not isinstance(tep_question, list) or len(tep_question) != self.HEIGHT:
             logging.error("Loading json file error: json formate error")
             raise Exception("Loading json file error")
-        self.question = []
+        self.__question = []
         for row in tep_question:
             tep_que = []
             for col in row:
                 if col == "*":
-                    tep_que.append(Digit())
+                    tep_que.append(PosDigit())
                 else:
                     dig = int(col)
-                    tep_que.append(Digit(dig))
+                    tep_que.append(PosDigit(dig))
             if len(tep_que) != self.WIDTH:
                 logging.error("Loading json file error: json formate error")
                 raise Exception("Loading json file error")
-            self.question.append(tep_que)
+            self.__question.append(tep_que)
 
     def __getitem__(self, index):
-        return self.question[index]
+        return self.__question[index]
 
     def __setitem__(self, key, value):
-        self.question[key] = value
+        self.__question[key] = value
+
+    def show(self):
+        for row in self.__question:
+            print("|", end="")
+            for col in row:
+                col.show()
+                print("|", end="")
+            print()
+
+    def get_entropy(self):
+        ret = 0
+        for row in self.__question:
+            for col in row:
+                ret += col.get_entropy()
+        return ret
