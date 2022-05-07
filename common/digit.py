@@ -6,9 +6,10 @@
 '''
 import logging
 import math
+import copy
 
 
-class Digit:
+class Digit(object):
     LIMIT_MAX = 9
     LIMIT_MIN = 0
 
@@ -30,18 +31,23 @@ class Digit:
             self.__num[initnum-self.LIMIT_MIN] = 1
 
     def add_num(self, num):
-        if num > self.LIMIT_MAX or num < self.LIMIT_MIN:
-            logging.error("Adding invalid num to digit")
-            return None
-        self.__num[num-self.LIMIT_MIN] = 1
-        return True
+        return self.set_num(num, 1)
 
     def remove_num(self, num):
+        return self.set_num(num, 0)
+
+    def set_num(self, num, val):
         if num > self.LIMIT_MAX or num < self.LIMIT_MIN:
-            logging.error("Removing invalid num on digit")
+            logging.error("Setting invalid num on digit: %d over [%d, %d]" % (
+                num, self.LIMIT_MIN, self.LIMIT_MAX))
             return None
-        self.__num[num-self.LIMIT_MIN] = 0
+        self.__num[num-self.LIMIT_MIN] = (1 if val else 0)
         return True
+
+    def has_num(self, num):
+        if num > self.LIMIT_MAX or num < self.LIMIT_MIN:
+            return False
+        return self.__num[num-self.LIMIT_MIN]
 
     def isdefinite(self):
         return sum(self.__num) == 1
@@ -61,6 +67,39 @@ class Digit:
 
     def __len__(self):
         return self.LIMIT_MAX - self.LIMIT_MIN + 1
+
+    def __and__(self, obj):
+        if not isinstance(obj, Digit):
+            raise Exception("Digit operator '&' rvalue is not a Digit")
+        if self.LIMIT_MAX != obj.LIMIT_MAX or self.LIMIT_MIN != obj.LIMIT_MIN:
+            raise Exception(
+                "Digit operator '&' lvalue and rvalue is not same Digit")
+        ret = copy.copy(self)
+        for ind, i in enumerate(obj.__num):
+            ret.__num[ind] &= i
+        return ret
+
+    def __or__(self, obj):
+        if not isinstance(obj, Digit):
+            raise Exception("Digit operator '|' rvalue is not a Digit")
+        if self.LIMIT_MAX != obj.LIMIT_MAX or self.LIMIT_MIN != obj.LIMIT_MIN:
+            raise Exception(
+                "Digit operator '|' lvalue and rvalue is not same Digit")
+        ret = copy.copy(self)
+        for ind, i in enumerate(obj.__num):
+            ret.__num[ind] |= i
+        return ret
+
+    def __xor__(self, obj):
+        if not isinstance(obj, Digit):
+            raise Exception("Digit operator '^' rvalue is not a Digit")
+        if self.LIMIT_MAX != obj.LIMIT_MAX or self.LIMIT_MIN != obj.LIMIT_MIN:
+            raise Exception(
+                "Digit operator '^' lvalue and rvalue is not same Digit")
+        ret = copy.copy(self)
+        for ind, i in enumerate(obj.__num):
+            ret.__num[ind] ^= i
+        return ret
 
     def show(self):
         if self.isdefinite():
