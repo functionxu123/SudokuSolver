@@ -65,6 +65,16 @@ class Digit(object):
                 ret = ind + self.LIMIT_MIN
         return ret
 
+    def get_allnum(self):
+        ret = []
+        for ind, i in enumerate(self.__num):
+            if i:
+                ret.append(ind+self.LIMIT_MIN)
+        return ret
+
+    def get_count(self):
+        return sum(self.__num)
+
     def __len__(self):
         return self.LIMIT_MAX - self.LIMIT_MIN + 1
 
@@ -99,6 +109,12 @@ class Digit(object):
         ret = copy.copy(self)
         for ind, i in enumerate(obj.__num):
             ret.__num[ind] ^= i
+        return ret
+
+    def __invert__(self):
+        ret = copy.copy(self)
+        for ind, i in enumerate(ret.__num):
+            ret.__num[ind] = 1-ret.__num[ind]
         return ret
 
     def show(self):
