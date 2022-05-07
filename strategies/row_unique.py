@@ -7,6 +7,7 @@
 
 from common.sudoku_question import SudokuQuestion
 from .basic_strategy import BaseStrategy
+import logging
 
 
 class RowUnique(BaseStrategy):
@@ -22,5 +23,10 @@ class RowUnique(BaseStrategy):
                     for rid_col in range(SudokuQuestion.WIDTH):
                         if rid_col == col:
                             continue
+                        definite_before = que[row][rid_col].isdefinite()
                         que[row][rid_col].remove_num(rid_num)
+                        definite_after = que[row][rid_col].isdefinite()
+                        if not definite_before and definite_after:
+                            logging.debug("[x=%d, y=%d] New Definite Digit To Be %d" % (
+                                rid_col, row, que[row][rid_col].get_minnum()))
         return que

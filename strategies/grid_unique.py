@@ -7,6 +7,7 @@
 
 from common.sudoku_question import SudokuQuestion
 from .basic_strategy import BaseStrategy
+import logging
 
 
 class GridUnique(BaseStrategy):
@@ -29,5 +30,10 @@ class GridUnique(BaseStrategy):
                                 for rid_dcol in range(gcol*GridUnique.GRID_WIDTH, (gcol+1)*GridUnique.GRID_WIDTH):
                                     if rid_drow == drow and rid_dcol == dcol:
                                         continue
+                                    definite_before = que[rid_drow][rid_dcol].isdefinite()
                                     que[rid_drow][rid_dcol].remove_num(rid_num)
+                                    definite_after = que[rid_drow][rid_dcol].isdefinite()
+                                    if not definite_before and definite_after:
+                                        logging.debug("[x=%d, y=%d] New Definite Digit To Be %d" % (
+                                            rid_dcol, rid_drow, que[rid_drow][rid_dcol].get_minnum()))
         return que
