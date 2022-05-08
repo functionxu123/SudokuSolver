@@ -80,7 +80,11 @@ class SudokuSolver:
                 tep_que=copy.deepcopy(que)
                 tep_que[row][col].set_only_num(num)
                 print("\nASSUME DIGIT[x=%d, y=%d] TO BE %d, TRY NEW SOLVE: %d/%d"%(col, row, num, ind+1, len(iternums)))
-                ret+=self.solve(tep_que)
+                try:
+                    ret+=self.solve(tep_que)
+                except Exception as e:
+                    print("THIS WAY IS WRONG\n")
+                    continue
         return ret
     
     def solve(self, que):
