@@ -40,7 +40,7 @@ class MultiRid:
             count_index[cnt].append([ind])
         # iter to find mult but unique
         len_no_difinite = sum([(0 if x.isdefinite() else 1) for x in digits])
-        max_count = min(len(digits[0]), len_no_difinite-1)
+        max_count = min(len(digits[0]), len_no_difinite)
         for cnt in range(2, max_count):
             if cnt not in count_index:
                 continue
