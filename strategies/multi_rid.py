@@ -39,7 +39,8 @@ class MultiRid:
                 count_index[cnt] = []
             count_index[cnt].append([ind])
         # iter to find mult but unique
-        max_count = len(digits[0])
+        len_no_difinite = sum([(0 if x.isdefinite() else 1) for x in digits])
+        max_count = min(len(digits[0]), len_no_difinite-1)
         for cnt in range(2, max_count):
             if cnt not in count_index:
                 continue
@@ -52,10 +53,10 @@ class MultiRid:
                 elif len(i) == cnt:
                     # do rid
                     tep_dig = MultiRid.listdigit_or([digits[x] for x in i])
-                    logging.debug("Get one multirid [count: %d, rid nums: %s ]" % (
-                        cnt, str(tep_dig.get_allnum())))
+                    logging.debug("Get one multirid [count: %d, rid nums: %s , formate indexs: %s]" % (
+                        cnt, str(tep_dig.get_allnum()), str(i)))
                     for ti in range(len(digits)):
-                        if ti in i:
+                        if ti in i or digits[ti].isdefinite():
                             continue
                         definite_before = digits[ti].isdefinite()
                         digits[ti] &= (~tep_dig)
