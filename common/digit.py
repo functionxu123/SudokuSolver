@@ -84,10 +84,20 @@ class Digit(object):
         if self.LIMIT_MAX != obj.LIMIT_MAX or self.LIMIT_MIN != obj.LIMIT_MIN:
             raise Exception(
                 "Digit operator '&' lvalue and rvalue is not same Digit")
-        ret = copy.copy(self)
+        ret = copy.deepcopy(self)
         for ind, i in enumerate(obj.__num):
             ret.__num[ind] &= i
         return ret
+
+    def __iand__(self, obj):
+        if not isinstance(obj, Digit):
+            raise Exception("Digit operator '&' rvalue is not a Digit")
+        if self.LIMIT_MAX != obj.LIMIT_MAX or self.LIMIT_MIN != obj.LIMIT_MIN:
+            raise Exception(
+                "Digit operator '&' lvalue and rvalue is not same Digit")
+        for ind, i in enumerate(obj.__num):
+            self.__num[ind] &= i
+        return self
 
     def __or__(self, obj):
         if not isinstance(obj, Digit):
@@ -95,7 +105,7 @@ class Digit(object):
         if self.LIMIT_MAX != obj.LIMIT_MAX or self.LIMIT_MIN != obj.LIMIT_MIN:
             raise Exception(
                 "Digit operator '|' lvalue and rvalue is not same Digit")
-        ret = copy.copy(self)
+        ret = copy.deepcopy(self)
         for ind, i in enumerate(obj.__num):
             ret.__num[ind] |= i
         return ret
@@ -106,13 +116,13 @@ class Digit(object):
         if self.LIMIT_MAX != obj.LIMIT_MAX or self.LIMIT_MIN != obj.LIMIT_MIN:
             raise Exception(
                 "Digit operator '^' lvalue and rvalue is not same Digit")
-        ret = copy.copy(self)
+        ret = copy.deepcopy(self)
         for ind, i in enumerate(obj.__num):
             ret.__num[ind] ^= i
         return ret
 
     def __invert__(self):
-        ret = copy.copy(self)
+        ret = copy.deepcopy(self)
         for ind, i in enumerate(ret.__num):
             ret.__num[ind] = 1-ret.__num[ind]
         return ret
@@ -133,3 +143,11 @@ class Digit(object):
             logging.error("digit check error: no valid num")
             return False
         return True
+
+    def set_digit(self, obj):
+        if not isinstance(obj, Digit):
+            raise Exception("Digit set value is not a Digit")
+        if self.LIMIT_MAX != obj.LIMIT_MAX or self.LIMIT_MIN != obj.LIMIT_MIN:
+            raise Exception(
+                "Digit set value is not same Digit")
+        self.__num = copy.deepcopy(obj.__num)

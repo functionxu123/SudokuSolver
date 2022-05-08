@@ -18,7 +18,7 @@ class RowMulti(BaseStrategy):
     def solve(que) -> SudokuQuestion:
         BaseStrategy.solve(que)
         for row in range(SudokuQuestion.HEIGHT):
-            logging.debug("Processing Row: %d"%(row))
+            logging.debug("Processing Row: %d" % (row))
             tep = []
             for col in range(SudokuQuestion.WIDTH):
                 tep.append(que[row][col])

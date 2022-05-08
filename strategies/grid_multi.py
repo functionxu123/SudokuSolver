@@ -22,8 +22,8 @@ class GridMulti(BaseStrategy):
         BaseStrategy.solve(que)
         for grow in range(int(SudokuQuestion.HEIGHT/GridMulti.GRID_HEIGHT)):
             for gcol in range(int(SudokuQuestion.WIDTH/GridMulti.GRID_WIDTH)):
-                logging.debug("Processing Grid: [x=%d, y=%d]"%(gcol, grow))
-                tep=[]
+                logging.debug("Processing Grid: [x=%d, y=%d]" % (gcol, grow))
+                tep = []
                 for drow in range(grow*GridMulti.GRID_HEIGHT, (grow+1)*GridMulti.GRID_HEIGHT):
                     for dcol in range(gcol*GridMulti.GRID_WIDTH, (gcol+1)*GridMulti.GRID_WIDTH):
                         tep.append(que[drow][dcol])

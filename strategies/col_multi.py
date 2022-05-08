@@ -19,7 +19,7 @@ class ColMulti(BaseStrategy):
     def solve(que) -> SudokuQuestion:
         BaseStrategy.solve(que)
         for col in range(SudokuQuestion.WIDTH):
-            logging.debug("Processing Col: %d"%(col))
+            logging.debug("Processing Col: %d" % (col))
             tep = []
             for row in range(SudokuQuestion.HEIGHT):
                 tep.append(que[row][col])

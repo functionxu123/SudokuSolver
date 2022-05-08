@@ -47,8 +47,7 @@ class SudokuSolver:
         self.args = args
         self.question = sudoku_question.SudokuQuestion(args.filename)
 
-    def step(self, index=0, strategys=STRATEGYS):
-        print("\n\nSTEP [", index, "]")
+    def step(self, strategys=STRATEGYS):
         entropy_change = 0
         for strategy in strategys:
             print("\nUSING STRATEGY: ", strategy.STRATEGYNAME)
@@ -65,13 +64,14 @@ class SudokuSolver:
                 logging.info("all digits resolved, this question is done")
                 break
         if entropy_change==0 and self.question.get_entropy()!=0 and strategys==STRATEGYS:
-            entropy_change+=self.step(index, STRATEGYS_HEAVY)
+            entropy_change+=self.step(STRATEGYS_HEAVY)
         return entropy_change
 
     def solveall(self):
         step_index=0
         while self.question.get_entropy()!=0:
-            ret=self.step(step_index)
+            logging.info("\n\nSTEP [%d]"%step_index)
+            ret=self.step(STRATEGYS)
             step_index+=1
 
             if not ret:
