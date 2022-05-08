@@ -86,7 +86,8 @@ class MultiRid:
                     tep_cnt = tep_dig.get_count()
                     if tep_cnt not in count_index:
                         count_index[tep_cnt] = []
-                    if tep_indexlist not in count_index[tep_cnt]:
+
+                    if tep_indexlist not in count_index[tep_cnt] and tep_cnt < len_no_difinite:
                         count_index[tep_cnt].append(tep_indexlist)
                         logging.debug("Count %d add one item: %s which means nums: %s" %
                                       (tep_cnt, str(tep_indexlist), str(tep_dig.get_allnum())))
