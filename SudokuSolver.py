@@ -10,6 +10,7 @@ from common import sudoku_question
 import argparse
 import datetime
 import logging
+import copy
 from strategies import col_unique, grid_unique, row_unique, row_multi, col_multi, grid_multi
 
 parser = argparse.ArgumentParser(description='SudokuSolver parser')
@@ -47,35 +48,60 @@ class SudokuSolver:
         self.args = args
         self.question = sudoku_question.SudokuQuestion(args.filename)
 
-    def step(self, strategys=STRATEGYS):
+    def step(self, que, strategys=STRATEGYS):
         entropy_change = 0
         for strategy in strategys:
             print("\nUSING STRATEGY: ", strategy.STRATEGYNAME)
-            old_entropy = self.question.get_entropy()
+            old_entropy = que.get_entropy()
             print("BEFORE: [ENTROPY=", old_entropy, "]")
-            self.question.show()
-            self.question = strategy.solve(self.question)
-            new_entropy = self.question.get_entropy()
+            que.show()
+            strategy.solve(que)
+            new_entropy = que.get_entropy()
             print("AFTER: [ENTROPY=", new_entropy, " CHANGE: ",
                   old_entropy-new_entropy, "]")
-            self.question.show()
+            que.show()
             entropy_change += old_entropy-new_entropy
             if new_entropy==0:
                 logging.info("all digits resolved, this question is done")
                 break
-        if entropy_change==0 and self.question.get_entropy()!=0 and strategys==STRATEGYS:
-            entropy_change+=self.step(STRATEGYS_HEAVY)
+        if entropy_change==0 and que.get_entropy()!=0 and strategys==STRATEGYS:
+            entropy_change+=self.step(que, STRATEGYS_HEAVY)
         return entropy_change
-
-    def solveall(self):
+    
+    def get_multi_answer(self, que):
+        ret=[]
+        if que.isdefinite():
+            ret.append(que.get_desc())
+        else:
+            row, col = que.get_firstindefinite()
+            iternums=que[row][col].get_allnum()
+ 
+            for ind,num in enumerate(iternums):
+                tep_que=copy.deepcopy(que)
+                tep_que[row][col].set_only_num(num)
+                print("\nASSUME DIGIT[x=%d, y=%d] TO BE %d, TRY NEW SOLVE: %d/%d"%(col, row, num, ind+1, len(iternums)))
+                ret+=self.solve(tep_que)
+        return ret
+    
+    def solve(self, que):
         step_index=0
-        while self.question.get_entropy()!=0:
-            logging.info("\n\nSTEP [%d]"%step_index)
-            ret=self.step(STRATEGYS)
+        while que.get_entropy()!=0:
+            print("\n\nSTEP [%d]"%step_index)
+            ret=self.step(que, STRATEGYS)
             step_index+=1
 
             if not ret:
                 break
+        return self.get_multi_answer(que)
+
+
+    def solveall(self):
+        ansers=self.solve(self.question)
+        
+        print ("\n\nFINALLY GET ANSWERS TOTAL: ",len(ansers))
+        for ind,i in enumerate(ansers):
+            print("ANSWER %d: "%ind)
+            print (i)
 
 if __name__=="__main__":
     tep = SudokuSolver(args)

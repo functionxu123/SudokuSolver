@@ -44,6 +44,15 @@ class Digit(object):
         self.__num[num-self.LIMIT_MIN] = (1 if val else 0)
         return True
 
+    def set_only_num(self, num,):
+        if num > self.LIMIT_MAX or num < self.LIMIT_MIN:
+            logging.error("Setting invalid only num on digit: %d over [%d, %d]" % (
+                num, self.LIMIT_MIN, self.LIMIT_MAX))
+            return None
+        self.__num = [0]*self.__len__()
+        self.__num[num-self.LIMIT_MIN] = 1
+        return True
+
     def has_num(self, num):
         if num > self.LIMIT_MAX or num < self.LIMIT_MIN:
             return False
@@ -132,6 +141,12 @@ class Digit(object):
             print(self.get_minnum(), end="")
         else:
             print("*", end="")
+
+    def get_desc(self):
+        if self.isdefinite():
+            return str(self.get_minnum())
+        else:
+            return "*"
 
     def get_entropy(self):
         if not self.check():

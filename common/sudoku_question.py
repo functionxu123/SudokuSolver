@@ -50,12 +50,29 @@ class SudokuQuestion:
                 print("|", end="")
             print()
 
+    def get_desc(self):
+        ret = ""
+        for row in self.__question:
+            ret += "|"
+            for col in row:
+                ret += col.get_desc()
+                ret += "|"
+            ret += "\n"
+        return ret
+
     def get_entropy(self):
         ret = 0
         for row in self.__question:
             for col in row:
                 ret += col.get_entropy()
         return ret
+
+    def isdefinite(self):
+        for row in self.__question:
+            for col in row:
+                if not col.isdefinite():
+                    return False
+        return True
 
     def check(self):
         for indr, row in enumerate(self.__question):
@@ -65,3 +82,10 @@ class SudokuQuestion:
                     logging.error("Digit error at: x=%d, y=%d " % (indc, indr))
                     return False
         return True
+
+    def get_firstindefinite(self):
+        for indr, row in enumerate(self.__question):
+            for indc, col in enumerate(row):
+                if not col.isdefinite():
+                    return indr, indc
+        return None, None
