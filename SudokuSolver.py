@@ -51,18 +51,17 @@ class SudokuSolver:
     def step(self, que, strategys=STRATEGYS):
         entropy_change = 0
         for strategy in strategys:
-            print("\nUSING STRATEGY: ", strategy.STRATEGYNAME)
+            logging.info("USING STRATEGY: %s"% strategy.STRATEGYNAME)
             old_entropy = que.get_entropy()
-            print("BEFORE: [ENTROPY=", old_entropy, "]")
+            logging.info("BEFORE: [ENTROPY= %f ]"%old_entropy)
             que.show()
             strategy.solve(que)
             new_entropy = que.get_entropy()
-            print("AFTER: [ENTROPY=", new_entropy, " CHANGE: ",
-                  old_entropy-new_entropy, "]")
+            logging.info("AFTER: [ENTROPY= %f CHANGE: %f ]"%(new_entropy, old_entropy-new_entropy))
             que.show()
             entropy_change += old_entropy-new_entropy
             if new_entropy==0:
-                logging.info("all digits resolved, this question is done")
+                logging.info("All Digits Resolved, This Question Is Done")
                 break
         if entropy_change==0 and que.get_entropy()!=0 and strategys==STRATEGYS:
             entropy_change+=self.step(que, STRATEGYS_HEAVY)
@@ -79,18 +78,18 @@ class SudokuSolver:
             for ind,num in enumerate(iternums):
                 tep_que=copy.deepcopy(que)
                 tep_que[row][col].set_only_num(num)
-                print("\nASSUME DIGIT[x=%d, y=%d] TO BE %d, TRY NEW SOLVE: %d/%d"%(col, row, num, ind+1, len(iternums)))
+                logging.info("ASSUME DIGIT[x=%d, y=%d] TO BE %d, TRY NEW SOLVE: %d/%d"%(col, row, num, ind+1, len(iternums)))
                 try:
                     ret+=self.solve(tep_que)
                 except Exception as e:
-                    print("THIS WAY IS WRONG\n")
+                    logging.info("THIS WAY IS WRONG\n")
                     continue
         return ret
     
     def solve(self, que):
         step_index=0
         while que.get_entropy()!=0:
-            print("\n\nSTEP [%d]"%step_index)
+            logging.info("STEP [%d]"%step_index)
             ret=self.step(que, STRATEGYS)
             step_index+=1
 
@@ -102,10 +101,9 @@ class SudokuSolver:
     def solveall(self):
         ansers=self.solve(self.question)
         
-        print ("\n\nFINALLY GET ANSWERS TOTAL: ",len(ansers))
+        logging.info ("FINALLY GET ANSWERS TOTAL: %d"%len(ansers))
         for ind,i in enumerate(ansers):
-            print("ANSWER %d: "%ind)
-            print (i)
+            logging.info("ANSWER %d: \n%s"%(ind, i))
 
 if __name__=="__main__":
     tep = SudokuSolver(args)

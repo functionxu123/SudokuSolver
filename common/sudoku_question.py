@@ -19,7 +19,8 @@ class SudokuQuestion:
         with open(jsonpath, "r") as f:
             tep_question = json.load(f)
 
-        if not isinstance(tep_question, list) or len(tep_question) != self.HEIGHT:
+        if not isinstance(tep_question,
+                          list) or len(tep_question) != self.HEIGHT:
             logging.error("Loading json file error: json formate error")
             raise Exception("Loading json file error")
         self.__question = []
@@ -43,15 +44,10 @@ class SudokuQuestion:
         self.__question[key] = value
 
     def show(self):
-        for row in self.__question:
-            print("|", end="")
-            for col in row:
-                col.show()
-                print("|", end="")
-            print()
+        logging.info(self.get_desc())
 
     def get_desc(self):
-        ret = ""
+        ret = "\n"
         for row in self.__question:
             ret += "|"
             for col in row:
