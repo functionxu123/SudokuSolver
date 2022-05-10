@@ -8,6 +8,7 @@
 from .positive_digit import PosDigit
 import json
 import logging
+import sys
 
 
 class SudokuQuestion:
@@ -85,3 +86,13 @@ class SudokuQuestion:
                 if not col.isdefinite():
                     return indr, indc
         return None, None
+
+    def get_minindefinite(self):
+        ret = None, None
+        lastcnt = sys.maxsize
+        for indr, row in enumerate(self.__question):
+            for indc, col in enumerate(row):
+                if not col.isdefinite() and col.get_count() < lastcnt:
+                    lastcnt = col.get_count()
+                    ret = indr, indc
+        return ret

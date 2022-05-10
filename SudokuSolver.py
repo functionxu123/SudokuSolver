@@ -87,7 +87,9 @@ class SudokuSolver:
         if que.isdefinite():
             ret.append(que.get_desc())
         else:
-            row, col = que.get_firstindefinite()
+            row, col = que.get_minindefinite()
+            if row is None or col is None:
+                return ret
             iternums = que[row][col].get_allnum()
 
             for ind, num in enumerate(iternums):
