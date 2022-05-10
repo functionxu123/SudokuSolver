@@ -47,7 +47,7 @@ class SudokuQuestion:
         logging.info(self.get_desc())
 
     def get_desc(self):
-        ret = "\n"
+        ret = ""
         for row in self.__question:
             ret += "|"
             for col in row:
