@@ -26,7 +26,8 @@ class MultiRid:
                          if not x.isdefinite()]
         # iter to find mult but unique
         len_no_difinite = sum([(0 if x.isdefinite() else 1) for x in digits])
-        max_count = min(len(digits[0]), len_no_difinite)
+        max_count = min(len(digits), len_no_difinite)
+        logging.debug("Iter Cnt In [%d, %d)"%(2, max_count))
         for cnt in range(2, max_count):
             tep_digits = []
             for indi, i in enumerate(kep_all_combs):
@@ -36,7 +37,7 @@ class MultiRid:
 
                     union_indexs = i[0] + [j]
                     tep = i[1] | digits[j]
-                    if len(tep) == len(union_indexs):
+                    if tep.get_count() == len(union_indexs):
                         logging.debug(
                             "Get one multirid [count: %d, rid nums: %s , formate indexs: %s]"
                             % (cnt, str(tep.get_allnum()), str(union_indexs)))
